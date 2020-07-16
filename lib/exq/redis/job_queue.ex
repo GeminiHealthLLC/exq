@@ -44,6 +44,9 @@ defmodule Exq.Redis.JobQueue do
           ["LPUSH", queue_key(namespace, queue), job_serialized]
         ])
 
+      Redix.stop(redis, 1_200_000)
+      # Process.exit(redis, :kill)
+
       case response do
         {:ok, [%Redix.Error{}, %Redix.Error{}]} = error -> error
         {:ok, [%Redix.Error{}, _]} = error -> error
